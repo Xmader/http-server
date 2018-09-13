@@ -76,7 +76,7 @@ if (!argv.s && !argv.silent) {
 }
 else if (colors) {
   logger = {
-    info: function () {},
+    info: console.log,
     request: function () {}
   };
 }
