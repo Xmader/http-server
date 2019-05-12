@@ -17,6 +17,12 @@ Installation via `npm`:
 
 This will install `http-server` globally so that it may be run from the command line.
 
+## Running on-demand:
+
+Using `npx` you can run the script without installing it first:
+
+     npx http-server [path] [options]
+
 ## Usage:
 
      http-server [path] [options]
@@ -29,7 +35,7 @@ This will install `http-server` globally so that it may be run from the command 
 
 ## Available Options:
 
-`-p` Port to use (defaults to 8080)
+`-p` or `--port` Port to use (defaults to 8080)
 
 `-a` Address to use (defaults to 0.0.0.0)
 
@@ -37,7 +43,9 @@ This will install `http-server` globally so that it may be run from the command 
 
 `-i` Display autoIndex (defaults to `true`)
 
-`-g` or `--gzip` When enabled (defaults to `false`) it will serve `./public/some-file.js.gz` in place of `./public/some-file.js` when a gzipped version of the file exists and the request accepts gzip encoding.
+`-g` or `--gzip` When enabled (defaults to `false`) it will serve `./public/some-file.js.gz` in place of `./public/some-file.js` when a gzipped version of the file exists and the request accepts gzip encoding. If brotli is also enabled, it will try to serve brotli first.
+
+`-b` or `--brotli` When enabled (defaults to `false`) it will serve `./public/some-file.js.br` in place of `./public/some-file.js` when a brotli compressed version of the file exists and the request accepts `br` encoding. If gzip is also enabled, it will try to serve brotli first.
 
 `-e` or `--ext` Default file extension if none supplied (defaults to `html`)
 
@@ -45,13 +53,19 @@ This will install `http-server` globally so that it may be run from the command 
 
 `--cors` Enable CORS via the `Access-Control-Allow-Origin` header
 
-`-o` Open browser window after starting the server
+`-o [path]` Open browser window after starting the server. Optionally provide a URL path to open. e.g.: -o /other/dir/
 
 `-c` Set cache time (in seconds) for cache-control max-age header, e.g. `-c10` for 10 seconds (defaults to `3600`). To disable caching, use `-c-1`.
 
 `-U` or `--utc` Use UTC time format in log messages.
 
+`--log-ip` Enable logging of the client's IP address (default: `false`).
+
 `-P` or `--proxy` Proxies all requests which can't be resolved locally to the given url. e.g.: -P http://someurl.com
+
+`--username` Username for basic authentication [none]
+
+`--password` Password for basic authentication [none]
 
 `-S` or `--ssl` Enable https.
 
@@ -67,6 +81,16 @@ This will install `http-server` globally so that it may be run from the command 
 
 - `index.html` will be served as the default file to any directory requests.
 - `404.html` will be served if a file is not found. This can be used for Single-Page App (SPA) hosting to serve the entry page.
+
+## Catch-all redirect
+
+To implement a catch-all redirect, use the index page itself as the proxy with:
+
+```
+http-server --proxy http://localhost:8080?
+```
+
+Note the `?` at the end of the proxy URL. Thanks to [@houston3](https://github.com/houston3) for this clever hack!
 
 # Development
 
